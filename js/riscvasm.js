@@ -81,7 +81,6 @@ const RISCV_PRIVILEGED = [
 
 const RISCV_KEYWORD = RISCV_MNEMONICS.concat(RISCV_PSEUDOS).concat(RISCV_PRIVILEGED);
 
-// A simple custom definition for RISC-V assembly in highlight.js
 hljs.registerLanguage('riscv', function(hljs) {
   return {
     name: 'RISC-V Assembly',
@@ -89,7 +88,6 @@ hljs.registerLanguage('riscv', function(hljs) {
     case_insensitive: true,
     keywords: {
       keyword: RISCV_KEYWORD.join(' '),
-      // add more instructions as needed
       meta: RISCV_DIRECTIVES.join(' '),
       built_in: RISCV_REGISTERS.join(' ')
     },
@@ -109,8 +107,7 @@ hljs.registerLanguage('riscv', function(hljs) {
           { // dec
             begin: '(?<![\\w.])-?(0|[1-9]\\d*)(?![:\\w])'
           },
-          {
-            // float
+          { // float
             begin: '\\b-?\\d+\\.\\d+'
           }
         ],
