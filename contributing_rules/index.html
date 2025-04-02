@@ -44,9 +44,6 @@
                             <li class="nav-item">
                                 <a href="https://github.com/Operacja-System/BigOS/issues" class="nav-link">Issues</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="../showcase/" class="nav-link">Showcase</a>
-                            </li>
                         </ul>
 
                     <ul class="nav navbar-nav ms-md-auto">
@@ -112,6 +109,10 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-bs-level="2"><a href="#license" class="nav-link">License</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             <li class="nav-item" data-bs-level="2"><a href="#formatting" class="nav-link">Formatting</a>
               <ul class="nav flex-column">
               </ul>
@@ -142,16 +143,33 @@
 <h1 id="contributing-rules">Contributing rules</h1>
 <h2 id="languages">Languages</h2>
 <p>To keep things simple the only allowed language is C23 and assembly where needed.</p>
+<h2 id="license">License</h2>
+<p>All source files should start with the following license header:</p>
+<pre><code class="language-text">&lt;one line to give the program's name and a brief idea of what it does.&gt;
+Copyright (C) &lt;year&gt; &lt;name of author&gt;
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see &lt;https://www.gnu.org/licenses/&gt;.
+</code></pre>
 <h2 id="formatting">Formatting</h2>
 <p>Ensure your code is properly formatted before submitting a pull request (use <code>scripts/format.sh</code>).  </p>
 <h2 id="naming-conventions">Naming conventions</h2>
 <ul>
-<li>Use snake_case for variables, functions, structs and enums.</li>
-<li>Use _t at the end of typedef definitions.</li>
-<li>Use ALL_CAPS for MACROS.</li>
-<li>Use ALL_CAPS for enums values and include the name of the enum at the beginning of the value name.</li>
-<li>Prefix global variables with g_.</li>
-<li>For file names use snake_case.</li>
+<li>Use <code>snake_case</code> for names (including file names).</li>
+<li>Use <code>_t</code> at the end of typedef definitions.</li>
+<li>Use <code>ALL_CAPS</code> for MACROS.</li>
+<li>Use <code>ALL_CAPS</code> for enum values and include the name of the enum at the beginning of the value name.</li>
+<li>Prefix global variables with <code>g_</code>.</li>
 </ul>
 <h3 id="naming-rules">Naming rules</h3>
 <ul>
