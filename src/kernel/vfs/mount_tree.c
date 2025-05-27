@@ -14,13 +14,13 @@ MT_NODE* mt_init()           // placeholder for now
 	return nodes;
 }
 
-bool mt_find_edge_by_label(MT_NODE* node, char* label, MT_NODE* out) {
+bool mt_find_edge_by_label(MT_NODE* node, char* label, MT_NODE** out) {
 	if (!node)
 		return false;
 
 	for (int i = 0; i < node->edges_size; i++) {
 		if (strcmp(node->edges[i].label, label) == 0) {
-			out = node->edges[i].to;
+			*out = node->edges[i].to;
 			return true;
 		}
 	}
@@ -29,8 +29,8 @@ bool mt_find_edge_by_label(MT_NODE* node, char* label, MT_NODE* out) {
 
 MT_ADD_NODE_STATUS mt_add_node(MT_NODE* node, char* label, SERVICE_HANDLE service) {
 	MT_ADD_NODE_STATUS ret;
-	MT_NODE* dummy;
-	if (mt_find_edge_by_label(node, label, dummy)) {
+	MT_NODE* dummy = nullptr;
+	if (mt_find_edge_by_label(node, label, &dummy)) {
 		ret.err = ERROR_MT_TRIED_TO_ADD_EDGE_WHICH_EXISTS;
 		return ret;
 	}
@@ -50,8 +50,8 @@ MT_ADD_MOUNTPOINT_STATUS mt_add_mountpoint(MT_NODE* root, VFS_PATH* path, SERVIC
 	MT_ADD_MOUNTPOINT_STATUS ret;
 	MT_NODE* node = root;
 	int idx = 0;
-	MT_NODE* next_node;
-	while (idx < path->size && mt_find_edge_by_label(node, path->path[idx], next_node)) {
+	MT_NODE* next_node = nullptr;
+	while (idx < path->size && mt_find_edge_by_label(node, path->path[idx], &next_node)) {
 		node = next_node;
 		idx++;
 	}
