@@ -15,21 +15,26 @@ typedef u32 FSProtocolVersion_t;
 /// Unique tag for a request (response will have the same tag)
 typedef u16 FSMessageTag_t;
 
-/// Identifier for a filesystem tree (when)
-typedef u32 FSServerTreeId_t;
+/// Abstract inode number representation
+typedef u64 ino_t;
+
+/// Mode for opening a file
+typedef u8 FSOpenMode_t;
 
 /// 'Cursor' type representing abstract pointer to a file in fs tree
 /// It might be 'nice' to by default have some information about pointed element here (file type at least maybe?)
-typedef u64 FSTreeCursor_t;
+typedef struct {
+	ino_t ino;
+	// TODO: Decide whether we want such things:
+	u8 file_type;
+	FSOpenMode_t file_modifiers;
+} FSTreeCursor_t;
 
 /// Represents a handle to a file opened for reading/writing
 typedef u64 FSFileHandle_t;
 
 // TODO: Create stat structure
 typedef u8 FSStatData_t;
-
-/// Mode for opening a file
-typedef u8 FSOpenMode_t;
 
 // TODO: Create a real structure and not just a placeholder
 /// Information about a file to be created
@@ -42,7 +47,7 @@ typedef struct {
 typedef enum : u8 {
 	/// Negotiate version and max request size, sanity check for fs server
 	FS_REQUEST_VERSION,
-	/// Requset access to the root of 'some' fs tree handled by server
+	/// Requset access to the root of fs tree handled by server
 	FS_REQUEST_CONNECT,
 	/// Walk the tree (move the cursor around)
 	FS_REQUEST_WALK,
@@ -117,7 +122,6 @@ typedef struct {
 
 typedef struct {
 	uid_t uid;
-	FSServerTreeId_t server_tree;
 } FSRequestConnect_t;
 
 typedef struct {
