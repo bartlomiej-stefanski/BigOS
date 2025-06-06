@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>VFS FS Server Protocol - BigOS Docs</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" disabled>
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" >
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/cmake.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">BigOS Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../about/" class="nav-link">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/Operacja-System/BigOS/issues" class="nav-link">Issues</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/Operacja-System/BigOS/edit/master/docs/vfs/Protocol.md" class="nav-link"><i class="fa-brands fa-github"></i> Edit on GitHub</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                              <button id="theme-menu" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme" class="nav-link dropdown-toggle">
+                                <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                <span class="d-lg-none ms-2">Toggle theme</span>
+                              </button>
+                              <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                                    <i class="fa-solid fa-sun fa-fw"></i>
+                                    <span class="ms-2">Light</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="true">
+                                    <i class="fa-solid fa-moon fa-fw"></i>
+                                    <span class="ms-2">Dark</span>
+                                    <i class="fa-solid fa-check ms-auto"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="false">
+                                    <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                    <span class="ms-2">Auto</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                              </ul>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script src="../../js/darkmode.js"></script>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#vfs-fs-server-protocol" class="nav-link">VFS FS Server Protocol</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#fs-server" class="nav-link">FS Server</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#protocol" class="nav-link">Protocol</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="3"><a href="#conventions" class="nav-link">Conventions</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="3"><a href="#metadata" class="nav-link">Metadata</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="3"><a href="#request-response-types" class="nav-link">Request-Response Types</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="vfs-fs-server-protocol">VFS FS Server Protocol</h1>
+<p>TODO: invent a name for this protocol</p>
+<blockquote>
+<p>For reference see <code>vfs/fs_server_protocol.h</code></p>
+</blockquote>
+<p>This is the protocol used for communication with FS Servers.
+It allows for performing all necesary operations to manage, access and modify a file system.</p>
+<h2 id="fs-server">FS Server</h2>
+<p>This term describes a userspace application that:</p>
+<ol>
+<li>Creates a server handle via call to <code>open</code> in <code>{TBD, maybe /serv?/}/</code>. The result of this call will be a readable <code>fd</code>.</li>
+<li>Accepts and responds to messages on <code>fd</code> using FS server protocol</li>
+</ol>
+<h2 id="protocol">Protocol</h2>
+<p>The <em>FS Server Protocol</em> consists of requests and responses to requests; all requests must receive exactly one response.</p>
+<h3 id="conventions">Conventions</h3>
+<p>Binary representations for data sent over streams use the following conventions:</p>
+<ul>
+<li>All multi-byte integers are sent in <strong>little</strong>-endian format</li>
+<li>Fields are packed tightly, no implicit padding is used</li>
+<li>Fields are listed in the order they are sent</li>
+<li><code>data[&lt;size&gt;]</code> corresponds to a <code>&lt;size&gt;</code> byte field named <code>data</code></li>
+<li>If <code>&lt;size&gt;</code> is not a constant then the length is specified by a preceding field</li>
+<li><code>(...)[&lt;count&gt;]</code> corresponds to an array of <code>&lt;count&gt;</code> elements</li>
+<li>If <code>&lt;count&gt;</code> is not a constant then the length is specified by a preceding field</li>
+<li>Strings are sent in UTF-8 encoding <strong>without</strong> a trailing null byte</li>
+</ul>
+<h3 id="metadata">Metadata</h3>
+<p>All requests/responses preceded by a <strong>metadata</strong> section containing:</p>
+<pre><code class="language-text">size[4]    tag[2]    type[2]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>size</code> – total size of the request (including this field)</li>
+<li><code>tag</code> – <strong>unique</strong> identifier for the request</li>
+<li><code>type</code> – type of request/response; Fs servers receive requests type, vfs receives response type</li>
+</ul>
+<blockquote>
+<p>This can be thought of as a transport layer header for the protocol.</p>
+</blockquote>
+<h3 id="request-response-types">Request-Response Types</h3>
+<h4 id="version">VERSION</h4>
+<p>Used to initiate connection, exactly one request-response messages should be exchanged before any other request is made.
+Client and server negotiate the maximal response size and protocol version (not used now, but maybe...).</p>
+<blockquote>
+<p>If error response is received the server will not be registered.</p>
+</blockquote>
+<h5 id="request">Request</h5>
+<pre><code class="language-text">max_size[4]    version[4]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>max_size</code> – max total response size</li>
+<li><code>version</code> – client protocol version implementation</li>
+</ul>
+<h5 id="response">Response</h5>
+<pre><code class="language-text">max_size[4]    version[4]
+</code></pre>
+<p>Where:
+- <code>u32 max_size</code> – max total request size
+- <code>u32 FSProtocolVersion_t version</code> – server protocol version implementation</p>
+<h4 id="connect"><a href="../Walk/">CONNECT</a></h4>
+<p>Used to receiveq a <strong>cursor</strong> to a root of fs tree.<br />
+The <strong>cursor</strong> is an abstract pointer to a file used for navigating the fs tree.</p>
+<h5 id="request_1">Request</h5>
+<pre><code class="language-text">uid[4]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>uid</code> – user ID for checking permissions</li>
+</ul>
+<h5 id="response_1">Response</h5>
+<pre><code class="language-text">cursor[8]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>cursor</code> – a unique identifier for a file in the file system</li>
+</ul>
+<h4 id="walk"><a href="../Walk/">WALK</a></h4>
+<p>Given a <strong>cursor</strong> and a list of names of subsequent directories to enter, this request returns a new <strong>cursor</strong> to the last directory in the list.</p>
+<h5 id="request_2">Request</h5>
+<pre><code class="language-text">cursor[8]    uid[4]    walk_count[2]    (name_size[2]  name[name_size])[walk_count]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>cursor</code> – a <strong>cursor</strong> from which to start walking the file system</li>
+<li><code>uid</code> – user ID for checking permissions</li>
+<li><code>walk_count</code> – number of subsequent directories to enter</li>
+<li><code>name_size</code> – size of the name in bytes</li>
+<li><code>name</code> – name of the directory to enter</li>
+</ul>
+<h5 id="response_2">Response</h5>
+<pre><code class="language-text">cursor[8]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>cursor</code> – a new <strong>cursor</strong> to the last directory in the list. If the walk was unsuccessful an error response is returned instead.</li>
+</ul>
+<h4 id="stat"><a href="../Stat/">STAT</a></h4>
+<p>Given a <strong>cursor</strong> returns metadata of pointed file.</p>
+<h5 id="request_3">Request</h5>
+<pre><code class="language-text">cursor[8]    uid[4]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>cursor</code> – a <strong>cursor</strong> to the file to get metadata for</li>
+<li><code>uid</code> – user ID for checking permissions</li>
+</ul>
+<h5 id="response_3">Response</h5>
+<pre><code class="language-text">size[2] stat[size]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>size</code> – size of the <code>stat</code> structure in bytes</li>
+<li><code>stat</code> – a <code>struct stat</code> containing metadata of the file</li>
+</ul>
+<h4 id="create"><a href="../Create_Delete/">CREATE</a></h4>
+<p>Creates a new file or directory at the location pointed to by the <strong>cursor</strong>.</p>
+<h5 id="request_4">Request</h5>
+<pre><code class="language-text">cursor[8]    uid[4]    options[4]    name_size[2]    name[name_size]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>cursor</code> – a <strong>cursor</strong> to the directory to create the file in</li>
+<li><code>uid</code> – user ID for checking permissions</li>
+<li><code>options</code> – options for creating the file, see <code>CREATE_OPTIONS</code></li>
+<li><code>name_size</code> – size of the name in bytes</li>
+<li><code>name</code> – name of the file to create</li>
+</ul>
+<h5 id="response_4">Response</h5>
+<pre><code class="language-text">cursor[8]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>cursor</code> – a new <strong>cursor</strong> to the created file. If the creation was unsuccessful an error response is returned instead.</li>
+</ul>
+<h4 id="delete"><a href="../Create_Delete/">DELETE</a></h4>
+<p>Deletes a file or directory at the location pointed to by the <strong>cursor</strong>.<br />
+After deletion the <strong>cursor</strong> is no longer valid.</p>
+<h5 id="request_5">Request</h5>
+<pre><code class="language-text">cursor[8]    uid[4]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>cursor</code> – a <strong>cursor</strong> to the file to delete</li>
+<li><code>uid</code> – user ID for checking permissions</li>
+</ul>
+<h5 id="response_5">Response</h5>
+<p>Empty response (consisting only of metadata) is given on success, error response is returned otherwise.</p>
+<h4 id="open"><a href="../Open/">OPEN</a></h4>
+<p>Given a <strong>cursor</strong> opens a file and returns a handle for reading/writing (depending on flags).<br />
+Returned handle is guaranteed to be unique and valid untile the file is closed (unless server explodes).</p>
+<h5 id="request_6">Request</h5>
+<pre><code class="language-text">cursor[8]    uid[4]    flags[4]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>cursor</code> – a <strong>cursor</strong> to the file to open</li>
+<li><code>uid</code> – user ID for checking permissions</li>
+<li><code>flags</code> – flags for opening the file, see <code>OPEN_FLAGS</code></li>
+</ul>
+<h5 id="response_6">Response</h5>
+<pre><code class="language-text">handle[8]    max_atomic_op[4]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>handle</code> – a unique identifier for the opened file, used for subsequent read/write operations. If the open was unsuccessful an error response is returned instead.</li>
+<li><code>max_atomic_op</code> – maximum size of an atomic operation that can be performed on the file, in bytes.</li>
+</ul>
+<h4 id="read"><a href="../Read/">READ</a></h4>
+<p>Given a <em>readable</em> <strong>handle</strong> reads data from the file.</p>
+<h5 id="request_7">Request</h5>
+<pre><code class="language-text">handle[8]    offset[8]    size[4]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>handle</code> – a <strong>handle</strong> to the file to read from</li>
+<li><code>offset</code> – offset in the file to read from, in bytes</li>
+<li><code>size</code> – size of the data to read, in bytes</li>
+</ul>
+<h5 id="response_7">Response</h5>
+<pre><code class="language-text">size[4]    data[size]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>size</code> – size of the data read, in bytes</li>
+<li><code>data</code> – data read from the file</li>
+</ul>
+<h4 id="write"><a href="../Write/">WRITE</a></h4>
+<p>Given a <em>writable</em> <strong>handle</strong> writes data to the file.</p>
+<h5 id="request_8">Request</h5>
+<pre><code class="language-text">handle[8]    offset[8]    size[4]    data[size]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>handle</code> – a <strong>handle</strong> to the file to write to</li>
+<li><code>offset</code> – offset in the file to write to, in bytes</li>
+<li><code>size</code> – size of the data to write, in bytes</li>
+<li><code>data</code> – data to write to the file</li>
+</ul>
+<h5 id="response_8">Response</h5>
+<pre><code class="language-text">size[4]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>size</code> – size of the data written, in bytes</li>
+</ul>
+<h4 id="wstat"><a href="../Stat/">WSTAT</a></h4>
+<p>Given a <em>writable</em> <strong>handle</strong> updates metadata of the file.</p>
+<h5 id="request_9">Request</h5>
+<pre><code class="language-text">handle[8]    size[2]    stat[size]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>handle</code> – a <strong>handle</strong> to the file to update metadata for</li>
+<li><code>size</code> – size of the <code>stat</code> structure in bytes</li>
+<li><code>stat</code> – a <code>struct stat</code> containing metadata to update</li>
+</ul>
+<h5 id="response_9">Response</h5>
+<p>Empty response is given on success.</p>
+<h4 id="close"><a href="../Open/">CLOSE</a></h4>
+<p>Closes a file handle, after this call the handle is no longer valid.</p>
+<h5 id="request_10">Request</h5>
+<pre><code class="language-text">handle[8]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>handle</code> – a <strong>handle</strong> to the file to close</li>
+</ul>
+<h5 id="response_10">Response</h5>
+<p>Empty response is given on success.</p>
+<h4 id="error">ERROR</h4>
+<p>This is a special response sent by the server in case of an error.<br />
+It can be sent in response to any request, but is not a request itself.</p>
+<h5 id="response_11">Response</h5>
+<p>```text
+size[2]    error_name[size]
+````</p>
+<p>Where:</p>
+<ul>
+<li><code>size</code> – size of the <code>error_name</code> string in bytes</li>
+<li><code>error_name</code> – name of the error, a string in UTF-8 encoding without a trailing null byte</li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+                <p>Copyright © 2025 BigOS</p>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../js/riscvasm.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
