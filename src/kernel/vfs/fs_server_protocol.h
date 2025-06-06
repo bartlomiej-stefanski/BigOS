@@ -18,16 +18,10 @@ typedef u16 FSMessageTag_t;
 /// Abstract inode number representation
 typedef u64 ino_t;
 
-/// Mode for opening a file
-typedef u8 FSOpenMode_t;
-
 /// 'Cursor' type representing abstract pointer to a file in fs tree
-/// It might be 'nice' to by default have some information about pointed element here (file type at least maybe?)
+/// This is a struct because we might want to store more information here in the future
 typedef struct {
 	ino_t ino;
-	// TODO: Decide whether we want such things:
-	u8 file_type;
-	FSOpenMode_t file_modifiers;
 } FSTreeCursor_t;
 
 /// Represents a handle to a file opened for reading/writing
@@ -36,12 +30,15 @@ typedef u64 FSFileHandle_t;
 // TODO: Create stat structure
 typedef u8 FSStatData_t;
 
+/// Mode for opening a file
+typedef u8 FSOpenMode_t;
+
 // TODO: Create a real structure and not just a placeholder
 /// Information about a file to be created
 typedef struct {
 	u16 permissions;
 	u16 fiele_type;
-} FSCrateInfo_t;
+} FSCreateInfo_t;
 
 /// Possible request types
 typedef enum : u8 {
@@ -156,7 +153,7 @@ typedef struct {
 	uid_t uid;
 	FSTreeCursor_t cursor;
 	// pstring_t name;
-	FSCrateInfo_t create_info;
+	FSCreateInfo_t create_info;
 } FSRequestCreate_t;
 
 typedef struct {
