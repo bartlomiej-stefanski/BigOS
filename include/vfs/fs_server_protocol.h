@@ -6,7 +6,7 @@
 #include <stdbigos/types.h>
 
 // TODO: create proper authentication types.
-//       This will be sufficient if we create an authentication server.
+//       This will be sufficient if we create an authentication server
 typedef u32 uid_t;
 
 /// FSProtocol Version
@@ -41,7 +41,7 @@ typedef struct {
 } FSCreateInfo_t;
 
 /// Possible request types
-typedef enum : u8 {
+typedef enum : u16 {
 	/// Negotiate version and max request size, sanity check for fs server
 	FS_REQUEST_VERSION,
 	/// Requset access to the root of fs tree handled by server
@@ -51,7 +51,6 @@ typedef enum : u8 {
 
 	/// Request information about file pointed by the cursor
 	FS_REQUEST_STAT,
-	// TODO: Decide whether we want create/remove (remove is kind of necesary)
 	FS_REQUEST_CREATE,
 	FS_REQUEST_DELETE,
 
@@ -61,12 +60,10 @@ typedef enum : u8 {
 	FS_REQUEST_WRITE,
 	FS_REQUEST_WSTAT,
 	FS_REQUEST_CLOSE,
-	/// Flush all requested operations for a given file before *this* message.
-	FS_REQUEST_FLUSH,
 } FSRequestType_t;
 
 /// Possible response types
-typedef enum : u8 {
+typedef enum : u16 {
 	/// Response with version and max response size, sanity check
 	FS_RESPONSE_VERSION,
 	/// Response with a cursor pointing to the root of the tree
@@ -88,8 +85,6 @@ typedef enum : u8 {
 	FS_RESPONSE_WSTAT,
 	/// Empty response (no error occured)
 	FS_RESPONSE_CLOSE,
-	/// Empty response when flush is complete
-	FS_RESPONSE_FLUSH,
 
 	/// Error occured when handling a request
 	FS_RESPONSE_ERROR,
@@ -128,16 +123,14 @@ typedef struct {
 typedef struct {
 	uid_t uid;
 	FSTreeCursor_t cursor;
-	// TODO: Decide whether we want multi-walks; if we do, then:
 	u16 walk_count;
+	// TODO: Implement pstring_t
 	/// Sequence of walks to take.
 	// pstring_t walk_path[0]; // Of length 'path_count'
 } FSRequestWalk_t;
 
 typedef struct {
 	FSTreeCursor_t cursor;
-	// TODO: Decide whether we want to allow for 'parially-successful-multi-walks'.
-	//       If we want to then then this must return some indicator.
 } FSResponseWalk_t;
 
 typedef struct {
@@ -152,8 +145,9 @@ typedef struct {
 typedef struct {
 	uid_t uid;
 	FSTreeCursor_t cursor;
-	// pstring_t name;
 	FSCreateInfo_t create_info;
+	// TODO: Implement pstring_t
+	// pstring_t name;
 } FSRequestCreate_t;
 
 typedef struct {
@@ -177,7 +171,7 @@ typedef struct {
 typedef struct {
 	FSFileHandle_t file_handle;
 	/// Max data that can be read/written in one operation (one protocol message)
-	u32 max_atomic_op; // TODO: Decide whether this is necessary
+	u32 max_atomic_op;
 } FSResponseOpen_t;
 
 typedef struct {
@@ -218,13 +212,7 @@ typedef struct {
 } FSResponseClose_t;
 
 typedef struct {
-	FSFileHandle_t file_handle;
-} FSRequestFlush_t;
-
-typedef struct {
-} FSResponseFlush_t;
-
-typedef struct {
+	// TODO: Implement pstring_t
 	// pstring_t error_name;
 } FSResponseError_t;
 
