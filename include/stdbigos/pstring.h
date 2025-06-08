@@ -16,6 +16,8 @@ pstring_t pstring_l2w(char* str);
 /// If ps is `NULL` or does not have `data` then `0` will be returned
 u32 pstring_len(const pstring_t* ps);
 
+size_t pstring_memcpy(pstring_t* dest, const pstring_t* src);
+
 /// Fills the `ps` with `val` value
 /// Depends on memory being already allocated
 u32 pstring_fill(pstring_t* ps, char val);
@@ -24,8 +26,9 @@ u32 pstring_fill(pstring_t* ps, char val);
 /// Returns the number of bytes copied.
 size_t pstring_memmove(pstring_t* dest, const pstring_t* src, size_t count);
 
-/// Compares two strings
 int pstring_strcmp(const pstring_t* lhs, const pstring_t* rhs);
+
+char* pstring_strchr(const pstring_t* ps, char ch);
 
 /// Returns a slice view for a given string.
 /// Characters of slice view represent range `[start, end)`
