@@ -75,6 +75,16 @@ int pstring_cmp(const pstring_t* lhs, const pstring_t* rhs) {
 	return 0;
 }
 
+char* pstring_strchr(const pstring_t* ps, char ch) {
+	for (u32 i = 0; i < ps->len; i++) {
+		if (ps->data[i] == ch) {
+			return ps->data + i;
+		}
+	}
+
+	return nullptr;
+}
+
 pstring_t pstring_slice_view(const pstring_t* ps, u32 start, u32 end) {
 	const u32 ps_len = pstring_len(ps);
 	if (ps_len == 0 || ps_len < start) {
