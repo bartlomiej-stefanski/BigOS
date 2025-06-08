@@ -6,7 +6,7 @@ pstring_t pstring_l2w(char* str) {
 	return (pstring_t){.len = strlen(str), .data = str};
 }
 
-u32 pstring_len(const pstring_t* ps) {
+u32 pstring_len_silenterr(const pstring_t* ps) {
 	if (!ps || !ps->data) {
 		return 0;
 	}
@@ -15,8 +15,8 @@ u32 pstring_len(const pstring_t* ps) {
 }
 
 size_t pstring_memcpy(pstring_t* dest, const pstring_t* src) {
-	const u32 dest_len = pstring_len(dest);
-	const u32 src_len = pstring_len(src);
+	const u32 dest_len = pstring_len_silenterr(dest);
+	const u32 src_len = pstring_len_silenterr(src);
 	if (dest_len == 0 || src_len == 0) {
 		return 0;
 	}
@@ -27,7 +27,7 @@ size_t pstring_memcpy(pstring_t* dest, const pstring_t* src) {
 }
 
 u32 pstring_fill(pstring_t* ps, char val) {
-	const u32 len = pstring_len(ps);
+	const u32 len = pstring_len_silenterr(ps);
 	if (len == 0) {
 		return 0;
 	}
@@ -40,8 +40,8 @@ u32 pstring_fill(pstring_t* ps, char val) {
 }
 
 size_t pstring_memmove(pstring_t* dest, const pstring_t* src, size_t count) {
-	const u32 dest_len = pstring_len(dest);
-	const u32 src_len = pstring_len(src);
+	const u32 dest_len = pstring_len_silenterr(dest);
+	const u32 src_len = pstring_len_silenterr(src);
 	if (dest_len == 0 || src_len == 0) {
 		return 0;
 	}
@@ -54,8 +54,8 @@ size_t pstring_memmove(pstring_t* dest, const pstring_t* src, size_t count) {
 }
 
 int pstring_cmp(const pstring_t* lhs, const pstring_t* rhs) {
-	const u32 lhs_len = pstring_len(lhs);
-	const u32 rhs_len = pstring_len(rhs);
+	const u32 lhs_len = pstring_len_silenterr(lhs);
+	const u32 rhs_len = pstring_len_silenterr(rhs);
 	if (lhs_len != rhs_len) {
 		return lhs_len < rhs_len ? -1 : 1;
 	}
@@ -86,7 +86,7 @@ char* pstring_strchr(const pstring_t* ps, char ch) {
 }
 
 pstring_t pstring_slice_view(const pstring_t* ps, u32 start, u32 end) {
-	const u32 ps_len = pstring_len(ps);
+	const u32 ps_len = pstring_len_silenterr(ps);
 	if (ps_len == 0 || ps_len < start) {
 		return (pstring_t){.len = 0, .data = nullptr};
 	}

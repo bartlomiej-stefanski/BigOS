@@ -14,7 +14,7 @@ pstring_t pstring_l2w(char* str);
 
 /// Returns the length of the string.
 /// If ps is `NULL` or does not have `data` then `0` will be returned
-u32 pstring_len(const pstring_t* ps);
+u32 pstring_len_silenterr(const pstring_t* ps);
 
 size_t pstring_memcpy(pstring_t* dest, const pstring_t* src);
 
