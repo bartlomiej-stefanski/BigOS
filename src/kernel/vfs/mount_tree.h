@@ -23,21 +23,21 @@ typedef struct MtNode_t {
 } MtNode_t;
 
 /// Initializes the mount tree; does basic setup
-error_t mt_init(MtNode_t** res);
+[[nodiscard]] error_t mt_init(MtNode_t** res);
 
 /// Deallocate the MtNode subtree
 void mt_free(MtNode_t* node);
 
 /// Attempts to step over `label` to next node.
-bool mt_step(const MtNode_t* node, const pstring_t* label, MtNode_t** out);
+[[nodiscard]] bool mt_step(const MtNode_t* node, const pstring_t* label, MtNode_t** out);
 
 /// Attempts to walk `path` starting from `node`.
 /// On fail returns false and `path` is modified to point to not-walked sufix
-bool mt_walk(const MtNode_t* node, VfsPath_t* path, MtNode_t** out);
+[[nodiscard]] bool mt_walk(const MtNode_t* node, VfsPath_t* path, MtNode_t** out);
 
 /// Ads a new node for handling a service below `node` accessible via `label`
 // error_t mt_add_node(MtNode_t* node, pstring_t label, ServiceHandle_t service, MtNode_t** new_node);
 
-error_t mt_add_mountpoint(MtNode_t* root, VfsPath_t path, ServiceHandle_t service, MtNode_t** out);
+[[nodiscard]] error_t mt_add_mountpoint(MtNode_t* root, VfsPath_t path, ServiceHandle_t service, MtNode_t** out);
 
 #endif
