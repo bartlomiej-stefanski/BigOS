@@ -21,7 +21,7 @@ typedef struct QueryQueue_t
 } QueryQueue_t;
 
 void query_queue_init(QueryQueue_t* queue);
-void query_queue_push(QueryQueue_t* queue, u8 c);
+void query_queue_push(QueryQueue_t* queue, u8 byte);
 error_t query_queue_front(QueryQueue_t* queue, u8* out);
 error_t query_queue_pop(QueryQueue_t* queue);
 
@@ -31,9 +31,12 @@ typedef struct ServerFile_t
     QueryQueue_t* query_queue;
 } ServerFile_t;
 
-error_t server_file_create(pstring_t* file_name, FtEntry_t* out);
-error_t server_file_open(pstring_t* file_name, FtEntry_t* out);
-error_t server_file_read(FtEntry_t* file, u32 bytes, u8* out);
-error_t server_file_write(FtEntry_t* file, u32 bytes, u8* buff);
+error_t server_find_by_name(pstring_t* file_name, i64* out);
+
+error_t server_file_create(pstring_t* file_name, FtEntry_t** out);
+error_t server_file_open(pstring_t* file_name, FtEntry_t** out);
+error_t server_file_read(FtEntry_t* file_entry, u32 bytes, u8* out);
+error_t server_file_write(FtEntry_t* file_entry, u32 bytes, u8* buff);
+error_t server_file_remove(pstring_t* file_name);
 
 #endif

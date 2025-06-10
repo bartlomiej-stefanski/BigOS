@@ -3,6 +3,6 @@
 
 #include "vfs.h"
 
-FtEntry_t* ft_add_entry(ServiceHandle_t handle, long file_id, int attributes);
+FtEntry_t* ft_add_entry(ServiceHandle_t handle, u64 file_id, u64 attributes);
 
 #endif

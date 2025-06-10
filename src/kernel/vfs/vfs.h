@@ -11,6 +11,14 @@ void vfsmain();
 
 #define ServiceHandle_t struct FtEntry_t*
 
+//Usually, service handle is a pointer to a file table entry which corresponds
+//to service's communication file. The server-fs driver is the only server
+//that doesn't have one (because server-fs driver is the guy who manages
+//calls like read or write to communication files, and if it has one too, then
+//someone else would have to manage calls to that file). So we place a random number here.
+
+#define SERVER_FS_HANDLE (FtEntry_t*) 39218098419283132
+
 //Table of opened files
 typedef struct FtEntry_t
 {
