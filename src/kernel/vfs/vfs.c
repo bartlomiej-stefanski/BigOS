@@ -1,7 +1,7 @@
 #include "vfs.h"
 #include "mount_tree.h"
-#include "file_table.h"
-#include "server_fs.h"
+#include "pipes.h"
+#include "stdbigos/error.h"
 #include "vfs_alloc.h"
 
 #include <debug/debug_stdio.h>
@@ -37,23 +37,37 @@ void vfsmain() {
 	kassert("foo" == nullptr); // Just for testing
 	PANIC("This should not be reached");
 
-    FtEntry_t* example_driver;
-    FtEntry_t* example_driver2;
+    ServiceHandle_t example_driver;
+
+    FtEntry_t* example_driver_fd1;
+    FtEntry_t* example_driver_fd2;
     char example_driver_name[] = "example driver";
     pstring_t example_driver_name_pstring = pstring_l2w(example_driver_name).val;
+
+    pipe_create(example_driver_name_pstring, &example_driver);
     char buff[100];
 
-    char example_message[] = "Hello server-fs! I'm example driver.\n";
-    server_file_create(&example_driver_name_pstring, &example_driver);
-    server_file_write(example_driver, strlen(example_message) + 1, (u8*) example_message);
-    server_file_read(example_driver, strlen(example_message) + 1, (u8*) buff);
+    char example_message1[] = "Hello server-fs! I'm example driver.\n";
+    pipe_open(example_driver->pipe_id, &example_driver_fd1);
+    pipe_write(example_driver_fd1->file_id, strlen(example_message1) + 1, (u8*) example_message1);
+    pipe_read(example_driver_fd1->file_id, strlen(example_message1) + 1, (u8*) buff);
     DEBUG_PUTS(buff);
 
     char example_message2[] = "Hi there! I'm example driver too!\n";
-    server_file_open(&example_driver_name_pstring, &example_driver2);
-    server_file_write(example_driver, strlen(example_message2) + 1, (u8*) example_message2);
-    server_file_read(example_driver, strlen(example_message2) + 1, (u8*) buff);
+    pipe_open(example_driver->pipe_id, &example_driver_fd2);
+    pipe_write(example_driver_fd2->file_id, strlen(example_message2) + 1, (u8*) example_message2);
+    pipe_read(example_driver_fd2->file_id, strlen(example_message2) + 1, (u8*) buff);
     DEBUG_PUTS(buff);
+
+    pipe_remove(example_driver_fd1->file_id);
+    if (pipe_read(example_driver_fd2->file_id, strlen(example_message2) + 1, (u8*) buff) == ERR_BROKEN_FILE_DESCRIPTOR)
+    {
+        DEBUG_PUTS("File descriptor broken (ok)\n");
+    }
+    else
+    {
+        DEBUG_PUTS("File descriptor not broken (not ok)\n");
+    }
 }
 
 VfsPath_t vfs_path_new(const VfsPathBuff_t* path_buff) {

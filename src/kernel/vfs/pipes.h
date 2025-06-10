@@ -1,5 +1,5 @@
-#ifndef _SERVER_FS_H_
-#define _SERVER_FS_H_
+#ifndef _PIPES_H_
+#define _PIPES_H_
 
 #include <stdbigos/pstring.h>
 #include <stdbigos/error.h>
@@ -25,18 +25,17 @@ void query_queue_push(QueryQueue_t* queue, u8 byte);
 error_t query_queue_front(QueryQueue_t* queue, u8* out);
 error_t query_queue_pop(QueryQueue_t* queue);
 
-typedef struct ServerFile_t
+
+//Maybe something more here?
+typedef struct Pipe_t
 {
-    pstring_t file_name;
     QueryQueue_t* query_queue;
-} ServerFile_t;
+} Pipe_t;
 
-error_t server_find_by_name(pstring_t* file_name, i64* out);
-
-error_t server_file_create(pstring_t* file_name, FtEntry_t** out);
-error_t server_file_open(pstring_t* file_name, FtEntry_t** out);
-error_t server_file_read(FtEntry_t* file_entry, u32 bytes, u8* out);
-error_t server_file_write(FtEntry_t* file_entry, u32 bytes, u8* buff);
-error_t server_file_remove(pstring_t* file_name);
+error_t pipe_create(pstring_t name, ServiceHandle_t* out);
+error_t pipe_open(u64 idx, FtEntry_t** out);
+error_t pipe_read(u64 idx, u32 bytes, u8* out);
+error_t pipe_write(u64 idx, u32 bytes, u8* buff);
+error_t pipe_remove(u64 idx);
 
 #endif
