@@ -1,5 +1,6 @@
 #include "vfs.h"
 #include "vfs_alloc.h"
+#include <debug/debug_stdio.h>
 
 FtEntry_t* ft_add_entry(ServiceHandle_t handle, u64 file_id, u64 attributes)
 {

@@ -7,6 +7,7 @@
 
 // DEBUG for testing CMake configuration
 void vfsmain();
+void vfs_init();
 
 
 #define ServiceHandle_t struct FtEntry_t*

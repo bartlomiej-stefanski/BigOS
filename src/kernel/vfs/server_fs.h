@@ -20,7 +20,7 @@ typedef struct QueryQueue_t
     u64 size;
 } QueryQueue_t;
 
-void query_queue_init(QueryQueue_t* queue);
+void query_queue_init(QueryQueue_t** queue);
 void query_queue_push(QueryQueue_t* queue, u8 byte);
 error_t query_queue_front(QueryQueue_t* queue, u8* out);
 error_t query_queue_pop(QueryQueue_t* queue);

@@ -4,6 +4,7 @@
 #include "file_table.h"
 #include <stdbigos/error.h>
 #include <stdbigos/pstring.h>
+#include <debug/debug_stdio.h>
 
 
 //Currently server files are stored in an array. Finding them by name takes O(MAX_SERVERS) operations.
@@ -11,10 +12,11 @@
 ServerFile_t server_files[MAX_SERVERS];
 bool is_server_slot_in_usage[MAX_SERVERS];
 
-void query_queue_init(QueryQueue_t* queue)
+void query_queue_init(QueryQueue_t** queue)
 {
-    queue->head = queue->tail = nullptr;
-    queue->size = 0;
+    *queue = (QueryQueue_t*) vfs_malloc(sizeof(QueryQueue_t));
+    (*queue)->head = (*queue)->tail = nullptr;
+    (*queue)->size = 0;
 }
 void query_queue_push(QueryQueue_t* queue, u8 byte)
 {
@@ -84,7 +86,7 @@ error_t server_file_create(pstring_t* file_name, FtEntry_t** out)
     }
     is_server_slot_in_usage[free_idx] = true;
     server_files[free_idx].file_name = *file_name;
-    query_queue_init(server_files[free_idx].query_queue);
+    query_queue_init(&server_files[free_idx].query_queue);
 
     *out = ft_add_entry(SERVER_FS_HANDLE, free_idx, 0); //TODO: Attributes
     return ERR_NONE;
