@@ -10,14 +10,6 @@
 		type val;                      \
 	} name##_t;
 
-#define ERRX_FNS_DEFINE                                 \
-	static inline name##_t name##_ok(type val) {        \
-		return (name##_t){.err = ERR_NONE, .val = val}; \
-	}                                                   \
-	static inline name##_t name##_err(error_t err) {    \
-		return (name##_t){.err = err};                  \
-	}
-
 #define ERRX_WRAPPER_T(name, type) ERRX_STRUCT_DEFINE(name##_##or_err, type)
 
 #define ERRX_UNWRAP(x)                \
