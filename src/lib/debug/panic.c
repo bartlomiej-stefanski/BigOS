@@ -2,16 +2,16 @@
 #include <debug/panic.h>
 
 void panic(const char* msg) {
-	DEBUG_PUTS("OVERCOOKED: ");
-	DEBUG_PUTS(msg);
-	DEBUG_PUTS("\n");
+	dputs("OVERCOOKED: ");
+	dputs(msg);
+	dputs("\n");
 
 	while (1) {
 	}
 }
 
 void error(const char* msg) {
-	DEBUG_PUTS("BURNT: ");
-	DEBUG_PUTS(msg);
-	DEBUG_PUTS("\n");
+	dputs("BURNT: ");
+	dputs(msg);
+	dputs("\n");
 }
