@@ -14,12 +14,7 @@ void vfsmain() {
 	pstring_t path1 = ERRX_UNWRAP(pstring_l2w("/foo/bar/baz/file.c"));
 	VfsPath_t path = vfs_path_new(&path1);
 
-	pstring_t edge;
-	edge.data = vfs_malloc(1024);
-	if (edge.data == nullptr) {
-		PANIC("vfs_malloc failed");
-	}
-	edge.len = 1024;
+	pstring_t edge = {.len = 0, .data = nullptr};
 	size_t i = 0;
 	while (vfs_path_next(&path, &edge)) {
 		if (edge.data == nullptr) {
