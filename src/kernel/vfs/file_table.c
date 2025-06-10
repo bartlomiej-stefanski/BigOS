@@ -1,4 +1,3 @@
-#include "file_table.h"
 #include "vfs.h"
 #include "vfs_alloc.h"
 
@@ -9,4 +8,10 @@ FtEntry_t* ft_add_entry(ServiceHandle_t handle, long file_id, int attributes)
     ret->file_id = file_id;
     ret->attributes = attributes;
     return ret;
+}
+
+//There could be more stuff here in future
+void ft_free_entry(FtEntry_t* entry)
+{
+    vfs_free(entry);
 }

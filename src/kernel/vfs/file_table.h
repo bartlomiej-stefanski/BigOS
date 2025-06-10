@@ -3,12 +3,6 @@
 
 #include "vfs.h"
 
-typedef struct FtEntry_t
-{
-    ServiceHandle_t handle;
-    long file_id;
-    int attributes;
-
-} FtEntry_t;
+FtEntry_t* ft_add_entry(ServiceHandle_t handle, long file_id, int attributes);
 
 #endif

@@ -8,8 +8,17 @@
 // DEBUG for testing CMake configuration
 void vfsmain();
 
-// TODO: Implement
-#define ServiceHandle_t void* // placeholder for now
+
+#define ServiceHandle_t struct FtEntry_t*
+
+//Table of opened files
+typedef struct FtEntry_t
+{
+    ServiceHandle_t handle;
+    u64 file_id;
+    u64 attributes;
+
+} FtEntry_t;
 
 /// Memory-owning representation of path
 typedef pstring_t VfsPathBuff_t;

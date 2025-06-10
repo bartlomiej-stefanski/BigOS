@@ -1,4 +1,5 @@
 #include "vfs.h"
+#include "file_table.h"
 
 #include <debug/debug_stdio.h>
 #include <debug/panic.h>
