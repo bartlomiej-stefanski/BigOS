@@ -6,6 +6,7 @@
 #include <stdbigos/pstring.h>
 #include <stdbigos/string.h>
 #include <stddef.h>
+
 #include "mount_tree.h"
 #include "pipes.h"
 #include "stdbigos/error.h"
@@ -34,15 +35,13 @@ void vfsmain() {
 		}
 		DEBUG_PUTC('\n');
 	}
-	kassert("foo" == nullptr); // Just for testing
-	PANIC("This should not be reached");
 
 	ServiceHandle_t example_driver;
 
-    FtEntry_t* example_driver_fd1;
-    FtEntry_t* example_driver_fd2;
-    char example_driver_name[] = "example driver";
-    pstring_t example_driver_name_pstring = pstring_l2w(example_driver_name).val;
+	FtEntry_t* example_driver_fd1;
+	FtEntry_t* example_driver_fd2;
+	char example_driver_name[] = "example driver";
+	pstring_t example_driver_name_pstring = pstring_l2w(example_driver_name).val;
 
 	pipe_create(example_driver_name_pstring, &example_driver);
 	char buff[100];
