@@ -1,6 +1,7 @@
 #ifndef STDBIGOS_META_ERR_X_T_H
 #define STDBIGOS_META_ERR_X_T_H
 
+#include <debug/panic.h>
 #include <stdbigos/error.h>
 
 #define ERRX_STRUCT_DEFINE(name, type) \
@@ -19,19 +20,11 @@
 
 #define ERRX_WRAPPER_T(name, type) ERRX_STRUCT_DEFINE(name##_##or_err, type)
 
-#ifndef PANIC
-	#define PANIC(X)                                            \
-		do {                                                    \
-			DEBUG_PRINTF("OVERCOOKED: %s\n", get_error_msg(X)); \
-			for (;;); /* TODO: remove on merge */               \
-		} while (0);
-#endif
-
 #define ERRX_UNWRAP(x)                \
 	({                                \
 		typeof(x) __errt = x;         \
 		if (__errt.err != ERR_NONE) { \
-			PANIC(__errt.err);        \
+			PANIC_E(__errt.err);      \
 		}                             \
 		__errt.val;                   \
 	})
