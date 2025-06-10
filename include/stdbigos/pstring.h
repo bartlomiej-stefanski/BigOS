@@ -26,7 +26,7 @@ size_or_err_t pstring_memcpy(pstring_t* dest, const pstring_t* src);
 /// Fills the `ps` with `val` value
 /// Depends on memory being already allocated
 [[nodiscard]]
-error_t pstring_fill(pstring_t* ps, char val);
+error_t pstring_fill(pstring_t* ps, u8 val);
 
 /// Copy `count` bytes from `src` to `dest`. Bounds are checked.
 /// Returns the number of bytes copied.
@@ -37,7 +37,7 @@ size_or_err_t pstring_memmove(pstring_t* dest, const pstring_t* src, size_t coun
 int_or_err_t pstring_strcmp(const pstring_t* lhs, const pstring_t* rhs);
 
 [[nodiscard]]
-pstring_or_err_t pstring_strchr(const pstring_t* ps, char ch);
+pstring_or_err_t pstring_strchr(const pstring_t* ps, u8 ch);
 
 /// Returns a slice view for a given string.
 /// Characters of slice view represent range `[start, end)`

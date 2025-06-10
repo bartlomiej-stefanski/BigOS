@@ -17,7 +17,7 @@ pstring_or_err_t pstring_l2w(char* str) {
 		return (pstring_or_err_t){.err = ERR_INVALID_ARGUMENT};
 	}
 	return (pstring_or_err_t){
-	    .val = {.len = strlen(str), .data = str}
+	    .val = {.len = strlen(str), .data = (u8*)str}
     };
 }
 
@@ -40,11 +40,11 @@ size_or_err_t pstring_memcpy(pstring_t* dest, const pstring_t* src) {
 	}
 
 	const u32 min_len = (dest_len < src_len) ? dest_len : src_len;
-	dest->data = (char*)memcpy(dest->data, src->data, min_len);
+	dest->data = (u8*)memcpy(dest->data, src->data, min_len);
 	return (size_or_err_t){.val = 0};
 }
 
-error_t pstring_fill(pstring_t* ps, char val) {
+error_t pstring_fill(pstring_t* ps, u8 val) {
 	ASSERT_PS_OR_ERR(ps);
 
 	const u32 len = pstring_len_silenterr(ps);
@@ -68,7 +68,7 @@ size_or_err_t pstring_memmove(pstring_t* dest, const pstring_t* src, size_t coun
 	const u32 min_len = (src->len < dest->len) ? src->len : dest->len;
 	count = (min_len < count) ? min_len : count;
 
-	dest->data = (char*)memmove(dest->data, src->data, count);
+	dest->data = (u8*)memmove(dest->data, src->data, count);
 	return (size_or_err_t){.val = count};
 }
 
@@ -96,7 +96,7 @@ int_or_err_t pstring_strcmp(const pstring_t* lhs, const pstring_t* rhs) {
 	return (int_or_err_t){.val = 0};
 }
 
-pstring_or_err_t pstring_strchr(const pstring_t* ps, char ch) {
+pstring_or_err_t pstring_strchr(const pstring_t* ps, u8 ch) {
 	ASSERT_PS_OR_ERR_T(pstring_or_err_t, ps);
 	size_t len = ps->len;
 	for (size_t i = 0; i < ps->len; i++, len--) {
