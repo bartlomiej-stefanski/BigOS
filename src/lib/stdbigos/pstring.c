@@ -53,7 +53,7 @@ size_t pstring_memmove(pstring_t* dest, const pstring_t* src, size_t count) {
 	return count;
 }
 
-int pstring_cmp(const pstring_t* lhs, const pstring_t* rhs) {
+int pstring_strcmp(const pstring_t* lhs, const pstring_t* rhs) {
 	const u32 lhs_len = pstring_len_silenterr(lhs);
 	const u32 rhs_len = pstring_len_silenterr(rhs);
 	if (lhs_len != rhs_len) {
