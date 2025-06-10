@@ -72,7 +72,7 @@ size_or_err_t pstring_memmove(pstring_t* dest, const pstring_t* src, size_t coun
 	return (size_or_err_t){.val = count};
 }
 
-int_or_err_t pstring_cmp(const pstring_t* lhs, const pstring_t* rhs) {
+int_or_err_t pstring_strcmp(const pstring_t* lhs, const pstring_t* rhs) {
 	ASSERT_PS_OR_ERR_T(int_or_err_t, lhs);
 	ASSERT_PS_OR_ERR_T(int_or_err_t, rhs);
 	const u32 lhs_len = pstring_len_silenterr(lhs);
