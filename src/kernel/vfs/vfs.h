@@ -9,30 +9,26 @@
 void vfsmain();
 void vfs_init();
 
-
-//Maybe some metadata here?
-typedef struct Service_t
-{
-    pstring_t service_name;
-    u64 pipe_id;
+// Maybe some metadata here?
+typedef struct Service_t {
+	pstring_t service_name;
+	u64 pipe_id;
 } Service_t;
 
 #define ServiceHandle_t Service_t*
 
-//Table of opened files
-typedef struct FtEntry_t
-{
-    ServiceHandle_t handle;
-    u64 file_id;
-    u64 attributes;
+// Table of opened files
+typedef struct FtEntry_t {
+	ServiceHandle_t handle;
+	u64 file_id;
+	u64 attributes;
 
 } FtEntry_t;
 
-//Pipe description
-typedef struct InnerPipeFd_t
-{
-    u64 pipe_id;
-    u64 attributes;
+// Pipe description
+typedef struct InnerPipeFd_t {
+	u64 pipe_id;
+	u64 attributes;
 
 } InnerPipeFd_t;
 
