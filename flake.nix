@@ -6,29 +6,32 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    flake-utils,
-  }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+    }:
     flake-utils.lib.eachDefaultSystem (
-      system: let
+      system:
+      let
         pkgs = nixpkgs.legacyPackages.${system};
 
         # riscv-none-elf toolchain
-        riscvPkgs = pkgs.pkgsCross.riscv64-embedded;
+        riscvPkgs = pkgs.pkgsCross.riscv64;
 
         riscvGcc = riscvPkgs.buildPackages.gcc;
         riscvBinutils = riscvPkgs.buildPackages.binutils;
         riscvGdb = riscvPkgs.buildPackages.gdb;
-      in {
+      in
+      {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             cmake
             clang-tools_19
           ];
 
-          buildInputs = [
+          nativeBuildInputs = [
             pkgs.qemu
             riscvGcc
             riscvBinutils
@@ -37,7 +40,7 @@
 
           shellHook = ''
             echo "Welcome to BigOS shell environment!"
-            echo "Installed toolchain is riscv-none-elf"
+            echo "Installed toolchain is riscv64-unknown-linux-gnu-gcc"
           '';
         };
       }
