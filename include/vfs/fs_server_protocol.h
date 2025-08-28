@@ -1,3 +1,5 @@
+// For more information see docs/vfs/Protocol.md
+
 // TODO: Invent a name for this protocol
 
 #ifndef _FS_SERVER_PROTOCOL_
@@ -124,9 +126,8 @@ typedef struct {
 	uid_t uid;
 	FSTreeCursor_t cursor;
 	u16 walk_count;
-	// TODO: Implement pstring_t
 	/// Sequence of walks to take.
-	// pstring_t walk_path[0]; // Of length 'path_count'
+	pstring_t walk_path[0]; // Of length 'path_count'
 } FSRequestWalk_t;
 
 typedef struct {
@@ -146,8 +147,7 @@ typedef struct {
 	uid_t uid;
 	FSTreeCursor_t cursor;
 	FSCreateInfo_t create_info;
-	// TODO: Implement pstring_t
-	// pstring_t name;
+	pstring_t name;
 } FSRequestCreate_t;
 
 typedef struct {
@@ -212,8 +212,7 @@ typedef struct {
 } FSResponseClose_t;
 
 typedef struct {
-	// TODO: Implement pstring_t
-	// pstring_t error_name;
+	pstring_t error_name;
 } FSResponseError_t;
 
 #endif
