@@ -72,6 +72,15 @@
             "environment": {
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo"
             }
+        },
+        {
+            "name": "test-type",
+            "hidden": true,
+            "cacheVariables": {
+                "BIGOS_BUILD_TESTS": "ON",
+                "TASTE_TESTS_SUCCESS_MESSAGE": "All test-suites passed",
+                "TASTE_TESTS_FAILIURE_MESSAGE": "Some test-suites did not pass"
+            }
         }
     ]
 }
