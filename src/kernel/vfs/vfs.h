@@ -7,10 +7,6 @@
 
 #include "pipes.h"
 
-// DEBUG for testing CMake configuration
-void vfsmain();
-void vfs_init();
-
 /// Represents a driver service
 typedef struct Service_t {
 	pstring_t name;
