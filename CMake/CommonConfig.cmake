@@ -8,6 +8,13 @@ set(BIGOS_QEMU_OPTIONS "-machine virt -serial mon:stdio -nographic" CACHE STRING
 
 separate_arguments(BIGOS_QEMU_OPTIONS_LIST UNIX_COMMAND "${BIGOS_QEMU_OPTIONS}")
 
+if (BIGOS_BUILD_TESTS)
+    enable_testing()
+    add_compile_definitions(TASTE_TESTS)
+    add_compile_definitions(TASTE_PASS_MESSAGE="${TASTE_TESTS_SUCCESS_MESSAGE}")
+    add_compile_definitions(TASTE_FAIL_MESSAGE="${TASTE_TESTS_FAILIURE_MESSAGE}")
+endif()
+
 function(SETUP_COMMON name)
     target_compile_features( ${name} PUBLIC c_std_23 )
     set_target_properties( ${name} PROPERTIES
@@ -27,6 +34,12 @@ function(SETUP_LIBRARY name)
     file(GLOB_RECURSE AS_SOURCES CONFIGURE_DEPENDS *.s)
     file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/${name}/*.h")
 
+    if (BIGOS_BUILD_TESTS)
+        if (NOT ${name} STREQUAL Taste)
+            target_link_libraries(${name} PRIVATE Taste)
+        endif()
+    endif()
+
     target_sources(${name}
       PRIVATE
         ${SOURCES}
@@ -42,7 +55,7 @@ function(SETUP_EXECUTABLE name)
     add_executable(${name})
     SETUP_COMMON(${name})
 
-	file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS *.c)
+    file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS *.c)
     file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS *.h)
     file(GLOB_RECURSE AS_SOURCES CONFIGURE_DEPENDS *.s)
 
@@ -96,5 +109,30 @@ function(ADD_QEMU_TARGET name)
         DEPENDS ${name}
         VERBATIM
         USES_TERMINAL
+    )
+endfunction()
+
+function(ADD_TASTE_TEST name)
+    cmake_parse_arguments(
+        arg
+        "BIOS_IMAGE"
+        ""
+        ""
+        ${ARGN}
+    )
+
+    set(CMD "${BIGOS_QEMU_PATH}" ${BIGOS_QEMU_OPTIONS_LIST}
+        $<IF:$<BOOL:${arg_BIOS_IMAGE}>,-bios,-kernel>
+        "$<TARGET_FILE:${name}>.bin"
+    )
+
+    add_test(NAME taste-${name}
+        COMMAND ${CMD}
+    )
+
+    set_tests_properties(taste-${name} PROPERTIES
+        DEPENDS ${name}
+        PASS_REGULAR_EXPRESSION "${TASTE_TESTS_SUCCESS_MESSAGE}"
+        TIMEOUT 20
     )
 endfunction()
