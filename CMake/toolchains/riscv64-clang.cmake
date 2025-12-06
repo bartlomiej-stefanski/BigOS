@@ -7,4 +7,8 @@ set(RISCV_CLANG_TOOLCHAIN_INCLUDED TRUE)
 
 include(${CMAKE_CURRENT_LIST_DIR}/riscv64-common.cmake)
 
+set(CMAKE_ASM_COMPILER clang)
 set(CMAKE_C_COMPILER clang)
+
+set(CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS} --target=riscv64-unknown-elf")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --target=riscv64-unknown-elf")

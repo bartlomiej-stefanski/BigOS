@@ -1,11 +1,10 @@
 #include "pipes.h"
 
 #include <debug/debug_stdio.h>
+#include <mock/alloc.h>
 #include <stdbigos/error.h>
 #include <stdbigos/pstring.h>
 #include <stdbigos/types.h>
-
-#include "vfs_alloc.h"
 
 typedef struct CircularBuffer_t {
 	u32 start;
@@ -32,7 +31,7 @@ static error_t circular_buffer_init(CircularBuffer_t* circular_buffer, u32 size)
 	    .end = 0,
 	    .size = size,
 	    .is_filled = false,
-	    .buffer = vfs_malloc(size),
+	    .buffer = malloc(size),
 	};
 	if (circular_buffer->buffer == nullptr) {
 		return ERR_MALLOC_FAILED;
@@ -101,7 +100,7 @@ static size_t circular_buffer_write(CircularBuffer_t* circular_buffer, const pst
 }
 
 static void circular_buffer_free(CircularBuffer_t* buffer) {
-	vfs_free(buffer->buffer);
+	free(buffer->buffer);
 }
 
 error_t pipe_create(KernelReadPipe_t* read_end, KernelWritePipe_t* write_end) {

@@ -1,14 +1,14 @@
 #include "mount_tree.h"
 
 #include <debug/debug_stdio.h>
+#include <mock/alloc.h>
 #include <stdbigos/error.h>
 #include <stdbigos/pstring.h>
 
 #include "vfs.h"
-#include "vfs_alloc.h"
 
 error_t mt_init(MtNode_t** res) {
-	*res = vfs_malloc(sizeof(MtNode_t));
+	*res = malloc(sizeof(MtNode_t));
 	if (!*res) {
 		return ERR_MALLOC_FAILED;
 	}
@@ -28,12 +28,12 @@ void mt_free(MtNode_t* node) {
 
 	MtEdgeList_t* edge_list = node->edge_list;
 	while (edge_list) {
-		vfs_free(edge_list->edge.label.data);
+		free(edge_list->edge.label.data);
 		mt_free(edge_list->edge.to);
 
 		MtEdgeList_t* curr = edge_list;
 		edge_list = edge_list->next;
-		vfs_free(curr);
+		free(curr);
 	}
 }
 
@@ -79,20 +79,20 @@ static error_t mt_add_nodes(MtNode_t* node, VfsPath_t path, MtNode_t** new_node)
 	node = *new_node;
 	pstring_t curr_label;
 	while (vfs_path_next(&path, &curr_label)) {
-		*new_node = vfs_malloc(sizeof(MtNode_t));
+		*new_node = malloc(sizeof(MtNode_t));
 		if (!*new_node) {
 			return ERR_MALLOC_FAILED;
 		}
 		(*new_node)->edge_list = nullptr;
 
 		// Copy the current label to own the memory behind it
-		pstring_t curr_label_copy = (pstring_t){.len = curr_label.len, .data = vfs_malloc(curr_label.len)};
+		pstring_t curr_label_copy = (pstring_t){.len = curr_label.len, .data = malloc(curr_label.len)};
 		if (!curr_label_copy.data) {
 			return ERR_MALLOC_FAILED;
 		}
 		ERRX_UNWRAP(pstring_memcpy(&curr_label_copy, &curr_label));
 
-		MtEdgeList_t* new_list_element = vfs_malloc(sizeof(MtEdgeList_t));
+		MtEdgeList_t* new_list_element = malloc(sizeof(MtEdgeList_t));
 		if (!*new_node) {
 			return ERR_MALLOC_FAILED;
 		}

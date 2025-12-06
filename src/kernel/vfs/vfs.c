@@ -2,6 +2,8 @@
 
 #include <debug/debug_stdio.h>
 #include <debug/panic.h>
+#include <mock/alloc.h>
+#include <mock/longjump.h>
 #include <stdbigos/assert.h>
 #include <stdbigos/error.h>
 #include <stdbigos/pstring.h>
@@ -11,7 +13,6 @@
 
 #include "file_table.h"
 #include "pipes.h"
-#include "vfs_alloc.h"
 
 static void vfs_test_path_next() {
 	pstring_t path1 = ERRX_UNWRAP(pstring_l2w("/foo/bar/baz/file.c"));
@@ -49,7 +50,7 @@ static void vfs_test_pipes() {
 	// TODO: Figure out better way of doing 'this' with pstring
 	pstring_t buff = (pstring_t){
 	    .len = 100,
-	    .data = vfs_alloca(100),
+	    .data = alloca(100),
 	};
 
 	// Write and read a mesage
@@ -84,6 +85,20 @@ static void vfs_test_pipes() {
 	ft_free_entry(example_file_entry2);
 }
 
+void vfs_test_long_jump() {
+	JumpBuff_t env;
+
+	DEBUG_PUTS("Before the save of the environment\n");
+	if (set_long_jump(&env) == 0) {
+		DEBUG_PUTS("Saved the environment, yay!\n");
+		long_jump(&env, 1);
+	} else {
+		DEBUG_PUTS("And long jump works, double yay!\n");
+	}
+
+	DEBUG_PUTS("No crash here as well\n");
+}
+
 // Here just for debugging
 void vfsmain() {
 	DEBUG_PUTS("Hello VFS\n");
@@ -92,6 +107,9 @@ void vfsmain() {
 	vfs_test_path_next();
 	DEBUG_PUTS("-> VFS showcase pipes:\n");
 	vfs_test_pipes();
+
+	DEBUG_PUTS("-> VFS showcase long jump\n");
+	vfs_test_long_jump();
 
 	DEBUG_PUTS("-> ALL vfs samples finished\n");
 }

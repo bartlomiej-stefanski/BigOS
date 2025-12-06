@@ -1,12 +1,12 @@
 #include <debug/debug_stdio.h>
+#include <mock/alloc.h>
 
 #include "pipes.h"
 #include "vfs.h"
-#include "vfs_alloc.h"
 
 FtEntry_t* ft_add_entry() {
 	// No check as this is just a mock.
-	return (FtEntry_t*)vfs_malloc(sizeof(FtEntry_t));
+	return (FtEntry_t*)malloc(sizeof(FtEntry_t));
 }
 
 void ft_free_entry(FtEntry_t* entry) {
@@ -22,5 +22,5 @@ void ft_free_entry(FtEntry_t* entry) {
 	case FT_ENTRY_WRITE_PIPE: pipe_close_write(&entry->kernel_write_pipe);
 	}
 
-	vfs_free(entry);
+	free(entry);
 }
